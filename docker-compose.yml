@@ -1,6 +1,8 @@
 version: "2.1"
 volumes:
   x11:
+  shared-data:
+  redis-data:
 services:
   gui:
     build: ./gui
@@ -8,6 +10,7 @@ services:
     privileged: true
     volumes:
       - 'x11:/tmp/.X11-unix'
+      - 'shared-data:/data/my_data'
     environment:
       - DISPLAY=:0
     depends_on:
@@ -18,3 +21,24 @@ services:
     privileged: true
     volumes:
       - 'x11:/tmp/.X11-unix'
+  utility:
+    build: ./utility
+    restart: always
+    privileged: true
+    volumes:
+      - 'shared-data:/data/my_data'
+    ports:
+      - "8088:8088"
+  redis:
+    image: redis:6.2.4-alpine
+    command: ["redis-server", "--save", "60", "250"]
+    volumes:
+      - redis-data:/data
+  flowdock:
+    restart: always
+    privileged: true
+    build: ./flowdock
+    volumes:
+      - 'shared-data:/data/my_data'
+    labels:
+      io.balena.features.supervisor-api: '1'
