@@ -6,11 +6,13 @@ from kivy.uix.carousel import Carousel
 from kivy.uix.image import AsyncImage
 from kivy.clock import Clock
 
-import os, sys
+import os
+
+AUTO_SLIDE_DURATION = 10
 
 class CarouselApp(App):
     def build(self):
-        carousel = Carousel(direction='right')
+        carousel = Carousel(direction='right',loop = True)
         self.carousel = carousel
 
         #read images
@@ -23,11 +25,11 @@ class CarouselApp(App):
         return carousel
 
     def on_start(self):
-        Clock.schedule_interval(self.auto_slide, 10)
+        Clock.schedule_interval(self.auto_slide, AUTO_SLIDE_DURATION)
 
     def auto_slide(self,delay):
-        pass
-        # self.carousel.next_slide()
+        self.carousel.load_next()
+
 
 
 CarouselApp().run()
