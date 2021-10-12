@@ -1,0 +1,20 @@
+version: "2.1"
+volumes:
+  x11:
+services:
+  gui:
+    build: ./gui
+    restart: always
+    privileged: true
+    volumes:
+      - 'x11:/tmp/.X11-unix'
+    environment:
+      - DISPLAY=:0
+    depends_on:
+      - xserver
+  xserver:
+    image: balenablocks/xserver
+    restart: always
+    privileged: true
+    volumes:
+      - 'x11:/tmp/.X11-unix'
