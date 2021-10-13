@@ -12,7 +12,7 @@ def WriteImageToFilesystem(filepath, fileContents):
     f.write(fileContents)
     f.close()
 
-flowNames = (os.getenv('FLOWS') or 'pub').split(',')
+flowNames = (os.getenv('FLOWS') or 'cattlegrid').split(',')
 tags = os.getenv('TAGS') or 'proofoflegs'
 flowdockToken = os.getenv("FLOWDOCK_TOKEN")  or '241865f63c44215fc3beae531b496b72'
 frequency = int(os.getenv("FREQUENCY") or 600)
@@ -36,7 +36,7 @@ while True:
                 messageId = message['flow'] + "-" + str(message['id'])
             
             if DbFunctions.ImageExists(messageId):
-                # we have processed this message
+                # we have processed this message!
                 continue
 
             if DbFunctions.SetImage(messageId, str(message['content'])):
