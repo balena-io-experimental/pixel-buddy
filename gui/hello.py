@@ -1,11 +1,11 @@
 import kivy
 kivy.require('2.0.0') 
-
 from kivy.app import App
 from kivy.uix.carousel import Carousel
 from kivy.uix.image import Image
 from kivy.clock import Clock
 
+import gc
 import os
 
 AUTO_SLIDE_DURATION = 10
@@ -22,6 +22,7 @@ class CarouselApp(App):
     def build_carousel(self, initialLoad):
         global pointer
         self.carousel.clear_widgets()
+        gc.collect()
         #read images
         images = sorted(os.listdir(imagePath))
         src = imagePath +'/' +images[pointer]
