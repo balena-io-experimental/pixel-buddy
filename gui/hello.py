@@ -3,7 +3,7 @@ kivy.require('2.0.0')
 
 from kivy.app import App
 from kivy.uix.carousel import Carousel
-from kivy.uix.image import AsyncImage
+from kivy.uix.image import Image
 from kivy.clock import Clock
 
 import os
@@ -31,7 +31,7 @@ class CarouselApp(App):
         images = sorted(os.listdir(imagePath))
         for img in images:
             src = imagePath +'/' +img
-            image = AsyncImage(source=src, allow_stretch=True)
+            image = Image(source=src, allow_stretch=True, nocache=True)
             self.carousel.add_widget(image)
 
 CarouselApp().run()
