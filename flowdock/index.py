@@ -14,7 +14,7 @@ def WriteImageToFilesystem(filepath, fileContents):
 
 flowNames = (os.getenv('FLOWS') or 'cattlegrid').split(',')
 tags = os.getenv('TAGS') or 'proofoflegs'
-flowdockToken = os.getenv("FLOWDOCK_TOKEN") 
+flowdockToken = os.getenv("FLOWDOCK_TOKEN")  or ''
 frequency = int(os.getenv("FREQUENCY") or 600)
 background = os.getenv("BACKGROUND_COLOUR") or "white"
 fontName = os.getenv("FONT") or "arial"
