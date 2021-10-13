@@ -53,7 +53,7 @@ class MainApp(App):
         self.carousel = carousel
 
         # create label
-        caption = Label(text='',size_hint=(1,0.05))
+        caption = Label(text='',size_hint=(1,0.05),font_size='25sp',text_size=(500, None),halign='center')
         self.caption = caption
 
         # layout -> root widget
