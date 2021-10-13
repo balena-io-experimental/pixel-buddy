@@ -17,7 +17,12 @@ pointer = 0
 
 # A carousel component to show images slideshow
 class SlideShow(Carousel):
+    def on_touch_down(self, touch):
+        if touch.is_double_tap:
+            print('double tap detected')
+            
     def build_carousel(self, initialLoad):
+        global images
         global pointer
         self.clear_widgets()
         gc.collect()
@@ -43,14 +48,12 @@ class SlideShow(Carousel):
 # main app 
 class MainApp(App):
     def build(self):
-        global images
-        global pointer
         # create carousel 95% vertical space
         carousel = SlideShow(direction='right',loop = True,scroll_timeout=0,size_hint=(1,0.95))
         self.carousel = carousel
 
         # create label
-        caption = Label(text='balenaSecondScreen',size_hint=(1,0.05))
+        caption = Label(text='',size_hint=(1,0.05))
         self.caption = caption
 
         # layout -> root widget
@@ -60,17 +63,28 @@ class MainApp(App):
         return layout
 
     def on_start(self):
+        global images
+        global pointer
         self.carousel.build_carousel(True)
 
-        # ToDo: 
         # set caption
+        self.update_caption()
 
         Clock.schedule_interval(self.build_carousel_on_timer,AUTO_SLIDE_DURATION)
 
     def build_carousel_on_timer(self,delay):
         self.carousel.build_carousel(False)
-        # ToDo: 
+        
         # update caption
+        self.update_caption()
+
+    def update_caption(self):
+        global images
+        global pointer
+        self.caption.text = images[pointer]
+
+
+
 
 
 
