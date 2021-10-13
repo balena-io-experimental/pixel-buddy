@@ -20,7 +20,7 @@ services:
     depends_on:
       - xserver
   xserver:
-    image: balenablocks/xserver
+    image: balenablocks/xserver:latest
     restart: always
     privileged: true
     volumes:
