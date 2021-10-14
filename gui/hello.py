@@ -30,7 +30,7 @@ class SlideShow(Carousel):
         images = sorted(os.listdir(imagePath))
 
         if len(images) == 0:
-            return
+            return False
 
         src = imagePath + '/' + images[pointer]
         image = Image(source=src, allow_stretch=True, nocache=True)
@@ -48,6 +48,8 @@ class SlideShow(Carousel):
             self.add_widget(image)
 
             self.load_next()
+        
+        return True
 
 # main app 
 class MainApp(App):
@@ -69,10 +71,9 @@ class MainApp(App):
     def on_start(self):
         global images
         global pointer
-        self.carousel.build_carousel(True)
-
-        # set caption
-        self.update_caption()
+        if self.carousel.build_carousel(True):
+            # set caption
+            self.update_caption()
 
         Clock.schedule_interval(self.build_carousel_on_timer,AUTO_SLIDE_DURATION)
 
@@ -92,13 +93,5 @@ class MainApp(App):
         for part in parts:
             caption = caption + " " + part
         self.caption.text = caption
-        
-
-
-
-
-
-
-    
 
 MainApp().run()
