@@ -1,32 +1,35 @@
-import flowdock
+from PIL import Image, ImageDraw, ImageFont
+
 import os
-import time
-from PIL import Image
-from PIL import ImageFont
-from PIL import ImageDraw
+import textwrap
+from string import ascii_letters
 
-from db_functions import DbFunctions
-
-def WriteImageToFilesystem(filepath, fileContents):
-    f = open("/data/my_data/" + filepath, "wb")
-    f.write(fileContents)
-    f.close()
 
 background = os.getenv("BACKGROUND_COLOUR") or "white"
 fontName = os.getenv("FONT") or "arial.ttf"
 fontSize = os.getenv("FONT_SIZE") or 40
 
-def txt2img(my_text):
-    img = Image.new('L', (720, 720), color=background)
-    draw = ImageDraw.Draw(img)
-    # OS Error using line below, can't find font file...
-    #font = ImageFont.truetype(fontName, fontSize)
-    # Below works, but default font is terrible!
-    font = ImageFont.load_default()
-    # # print(message['content'])
-    draw.text((0, 0), my_text, font=font)
-    # # img.save(message['content']['file_name'])
-    img.save('test5.png')
 
-txt2img("Hello World!")
+
+def txt2img(my_text):
+    img = Image.new('RGBA', (720, 720), color=background)
+    draw = ImageDraw.Draw(img)
+
+    font = ImageFont.load_default()
+
+
+    # Calculate the average length of a single character of our font.
+    # Note: this takes into account the specific font and font size.
+    avg_char_width = sum(font.getsize(char)[0] for char in ascii_letters) / len(ascii_letters)
+    # Translate this average length into a character count
+    max_char_count = int( (img.size[0] * .75) / avg_char_width )
+    # Create a wrapped text object using scaled character count
+    text = textwrap.fill(text=my_text, width=max_char_count)
+
+    w, h = draw.textsize(text)
+
+    # Add text to the image
+    draw.text(xy=((img.size[0] - w)/2, (img.size[1] - h) / 2), text=text, font=font, fill='#000000')
+
+    return img
 
