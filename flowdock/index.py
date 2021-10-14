@@ -39,8 +39,8 @@ def GetName(token, uuid) -> int:
         assert resp.status_code == 200, (resp.status_code, resp.content)
         # print(resp.json())
         GetName.cache.update({u['id']: u['nick'] for u in resp.json()})
-
-    if not uuid in GetName.cache.keys():
+    # print(GetName.cache.keys())
+    if not int(uuid) in GetName.cache.keys():
         return "@unknown"
     else:
         return "@" + GetName.cache[int(uuid)]

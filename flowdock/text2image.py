@@ -29,6 +29,8 @@ class TextFunctions():
         text = textwrap.fill(text=my_text, width=max_char_count)
 
         try:
+            if DEBUG:
+                print("Converting " + my_text + " to an image.")
             w, h = draw.textsize(emoji.demojize(text))
         except UnicodeEncodeError:
             if DEBUG:
