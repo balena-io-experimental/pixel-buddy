@@ -78,10 +78,9 @@ class MainApp(App):
         Clock.schedule_interval(self.build_carousel_on_timer,AUTO_SLIDE_DURATION)
 
     def build_carousel_on_timer(self,delay):
-        self.carousel.build_carousel(False)
-        
-        # update caption
-        self.update_caption()
+        if self.carousel.build_carousel(False):        
+            # update caption
+            self.update_caption()
 
     def update_caption(self):
         global images
