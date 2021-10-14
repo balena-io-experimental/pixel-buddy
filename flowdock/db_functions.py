@@ -2,6 +2,7 @@ import redis
 import os
 
 redisHost = os.getenv("REDIS_HOST") or 'redis'
+expiry = int((os.getenv("EXPIRY") or 12) * 60 * 60)
 class DbFunctions():
 
     def GetImage(imageID):
@@ -22,27 +23,28 @@ class DbFunctions():
         #
         r = redis.StrictRedis(host=redisHost, port=6379, db=0, decode_responses=False)
         # Add the image to the database, which expires in ex seconds
-        result = r.set(imageID, imageBytes, ex=36000)
+        result = r.set(imageID, imageBytes, ex=expiry)
         
         if not result:
             print("Error setting image!")
         else:
             print("Keys in DB = " + str(r.dbsize()))
-            
-        # Add a record of the image that does not expire
-        result = r.set('NXP' + imageID, '1')
-        if not result:
-            print("Error setting image record!")
+       
             
         return result
         
         
     def ImageExists(imageID):
-        #
-        # Returns False if <imageID> has never existed in the database, or True if it has (even if expired)
-        #
         r = redis.StrictRedis(host=redisHost, port=6379, db=0, decode_responses=True)
-        return ( 1 == r.exists('NXP' + imageID) )    
+        return ( 1 == r.exists(imageID) )    
 
+    def Flush():
+        print("Flushing redis")
+        r = redis.StrictRedis(host=redisHost, port=6379, db=0, decode_responses=True)
+        r.flushall()
+    
+    def Keys():
+        r = redis.StrictRedis(host=redisHost, port=6379, db=0, decode_responses=True)
+        return r.keys('*')
     
     
