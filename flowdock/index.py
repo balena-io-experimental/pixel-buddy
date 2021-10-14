@@ -7,6 +7,7 @@ from PIL import ImageDraw
 import requests
 from datetime import datetime
 from db_functions import DbFunctions
+from text2image import TextFunctions
 
 flowNames = (os.getenv('FLOWS') or 'pub,team-happiness').split(',')
 tags = os.getenv('TAGS') or 'proofoflegs,memeservice'
@@ -19,13 +20,14 @@ fontName = os.getenv("FONT") or "arial"
 fontSize = os.getenv("FONT_SIZE") or 40
 FLUSH = (os.getenv("FLUSH") or "false") != "false"
 DEBUG = (os.getenv("DEBUG") or "false") != "false"
+imagePath = "/data/my_data/"
 
 if( None == flowdockToken ):
     exit("No flowdock API in environment variable. Please set it as FLOWDOCK_TOKEN")
 flowdockClient = flowdock.connect(token=flowdockToken)
 
 def WriteImageToFilesystem(filepath, fileContents):
-    f = open("/data/my_data/" + filepath, "wb")
+    f = open(imagePath + filepath, "wb")
     f.write(fileContents)
     f.close()
 
@@ -84,13 +86,14 @@ def ProcessMessages(messages):
             username = GetName(flowdockToken, message['user'])
             newFileName = messageId + "_" + username + "_" + GetImageTags(message)
             
-            if(message['event'] == 'file'):
-                if DbFunctions.SetImage(messageId,newFileName):
-                    # path = str(message['content']['file_name'])
+            
+            if DbFunctions.SetImage(messageId,newFileName):
+                if(message['event'] == 'file'):
                     fileContents = flow.download(message['content']['path'])
                     WriteImageToFilesystem(newFileName, fileContents)
-            else:
-                print(message)
+                else:
+                    # print(message)
+                    TextFunctions.SaveTextToImage(message['content'], newFileName)
 
 # flush the redis cache - used to reset the device
 if FLUSH:
