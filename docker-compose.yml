@@ -25,14 +25,6 @@ services:
     privileged: true
     volumes:
       - 'x11:/tmp/.X11-unix'
-  # utility:
-  #   build: ./utility
-  #   restart: always
-  #   privileged: true
-  #   volumes:
-  #     - 'shared-data:/data/my_data'
-  #   ports:
-  #     - "8088:8088"
   redis:
     image: redis:6.2.4-alpine
     command: ["redis-server", "--save", "60", "250"]

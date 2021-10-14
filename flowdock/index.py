@@ -1,13 +1,11 @@
 import flowdock
 import os
 import time
-from PIL import Image
-from PIL import ImageFont
-from PIL import ImageDraw
 import requests
 from datetime import datetime
 from db_functions import DbFunctions
 from text2image import TextFunctions
+import gc
 
 flowNames = (os.getenv('FLOWS') or 'pub,team-happiness').split(',')
 tags = os.getenv('TAGS') or 'proofoflegs,memeservice,announce'
@@ -31,20 +29,20 @@ def WriteImageToFilesystem(filepath, fileContents):
     f.write(fileContents)
     f.close()
 
-def GetName(token, uuid) -> int:
+# does a user->handle lookup on FD and builds a cache
+def GetFlowdockUsername(token, uuid) -> int:
     API = 'https://api.flowdock.com'
-    if not hasattr(GetName, 'cache'):
-        GetName.cache = {}
+    if not hasattr(GetFlowdockUsername, 'cache'):
+        GetFlowdockUsername.cache = {}
         resp = requests.get(f'{API}/users', auth=(token, ''))
         assert resp.status_code == 200, (resp.status_code, resp.content)
-        # print(resp.json())
-        GetName.cache.update({u['id']: u['nick'] for u in resp.json()})
-    # print(GetName.cache.keys())
-    if not int(uuid) in GetName.cache.keys():
+        GetFlowdockUsername.cache.update({u['id']: u['nick'] for u in resp.json()})
+    if not int(uuid) in GetFlowdockUsername.cache.keys():
         return "@unknown"
     else:
-        return "@" + GetName.cache[int(uuid)]
+        return "@" + GetFlowdockUsername.cache[int(uuid)]
 
+# formats the tags from the FD response into hashtags
 def GetImageTags(message):
     messageTags = message['tags']
     messageTags.pop(0)
@@ -53,6 +51,7 @@ def GetImageTags(message):
         result = result + "#" + tag + " "
     return result
 
+# returns true if the message is older than the configured expiry time in seconds
 def MessageExpired(message):
     timestamp = (message['sent'])
     convertedTimestamp = datetime.fromtimestamp(round(timestamp / 1000))
@@ -86,20 +85,29 @@ def ProcessMessages(messages):
                         print("Message has expired")
                     continue
 
-            username = GetName(flowdockToken, message['user'])
+            username = GetFlowdockUsername(flowdockToken, message['user'])
+            # construct a filename for the GUI to build a caption from
             newFileName = messageId + "_" + username + "_" + GetImageTags(message)
             
+            # if it's an image
             if(message['event'] == 'file'):
                 if DbFunctions.SetImage(messageId,newFileName):
+                    # follow the redirect and download the image from S3
                     fileContents = flow.download(message['content']['path'])
                     WriteImageToFilesystem(newFileName, fileContents)
+                    fileContents = None
+                    gc.collect()
             else:
+                # we only generate images from text messages for #announce tags
+                # everything else (e.g. @team) causes unpretty, pointless images
                 if ("announce" in message['tags']) or ("announce" in message['content']):
                     print(message)
                     if DbFunctions.SetImage(messageId,newFileName):
                         TextFunctions.SaveTextToImage(message['content'], newFileName)
 
 # flush the redis cache - used to reset the device
+# this is best to have on by default, to cleanup images
+# if/when the user alters the config
 if FLUSH:
     DbFunctions.Flush()
 

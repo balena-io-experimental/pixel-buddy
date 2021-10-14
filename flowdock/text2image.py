@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 from pilmoji import Pilmoji
 import emoji
-
+import gc
 import os
 import textwrap
 from string import ascii_letters
@@ -43,7 +43,8 @@ class TextFunctions():
         pilmoji = Pilmoji(img)
         pilmoji.text(position, text, (255,255,255),font)
         # draw.text(xy=, text=text, font=font, fill='#ffffff', align='center')
-        # img.show()
         img.save(imagePath + filename, 'png')
-
+        img = None
+        text = None
+        gc.collect()
 
