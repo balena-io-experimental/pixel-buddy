@@ -1,15 +1,13 @@
 from PIL import Image, ImageDraw, ImageFont
-
 import os
 import textwrap
 from string import ascii_letters
-
 
 background = os.getenv("BACKGROUND_COLOUR") or "teal"
 fontName = os.getenv("FONT") or "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
 fontSize = os.getenv("FONT_SIZE") or 40
 imagePath = "/data/my_data/"
-
+DEBUG = (os.getenv("DEBUG") or "false") != "false"
 class TextFunctions():
 
     def SaveTextToImage(my_text, filename):
@@ -27,7 +25,12 @@ class TextFunctions():
         # Create a wrapped text object using scaled character count
         text = textwrap.fill(text=my_text, width=max_char_count)
 
-        w, h = draw.textsize(text)
+        try:
+            w, h = draw.textsize(text)
+        except UnicodeEncodeError:
+            if DEBUG:
+                print("Could not encode the message: " + my_text)
+            return
 
         # Add text to the image
         draw.text(xy=((img.size[0] - w)/4, (img.size[1] - h) / 4), text=text, font=font, fill='#ffffff', align='center')

@@ -10,7 +10,7 @@ from db_functions import DbFunctions
 from text2image import TextFunctions
 
 flowNames = (os.getenv('FLOWS') or 'pub,team-happiness').split(',')
-tags = os.getenv('TAGS') or 'proofoflegs,memeservice'
+tags = os.getenv('TAGS') or 'proofoflegs,memeservice,announce'
 flowdockToken = os.getenv("FLOWDOCK_TOKEN")
 frequency = int(os.getenv("FREQUENCY") or 120)
 background = os.getenv("BACKGROUND_COLOUR") or "white"
@@ -37,10 +37,13 @@ def GetName(token, uuid) -> int:
         GetName.cache = {}
         resp = requests.get(f'{API}/users', auth=(token, ''))
         assert resp.status_code == 200, (resp.status_code, resp.content)
-        
+        # print(resp.json())
         GetName.cache.update({u['id']: u['nick'] for u in resp.json()})
-        
-    return "@" + GetName.cache[int(uuid)]
+
+    if not uuid in GetName.cache.keys():
+        return "@unknown"
+    else:
+        return "@" + GetName.cache[int(uuid)]
 
 def GetImageTags(message):
     messageTags = message['tags']
@@ -86,14 +89,15 @@ def ProcessMessages(messages):
             username = GetName(flowdockToken, message['user'])
             newFileName = messageId + "_" + username + "_" + GetImageTags(message)
             
-            
-            if DbFunctions.SetImage(messageId,newFileName):
-                if(message['event'] == 'file'):
+            if(message['event'] == 'file'):
+                if DbFunctions.SetImage(messageId,newFileName):
                     fileContents = flow.download(message['content']['path'])
                     WriteImageToFilesystem(newFileName, fileContents)
-                else:
-                    # print(message)
-                    TextFunctions.SaveTextToImage(message['content'], newFileName)
+            else:
+                if("announce" in message['tags']):
+                    print(message)
+                    if DbFunctions.SetImage(messageId,newFileName):
+                        TextFunctions.SaveTextToImage(message['content'], newFileName)
 
 # flush the redis cache - used to reset the device
 if FLUSH:
