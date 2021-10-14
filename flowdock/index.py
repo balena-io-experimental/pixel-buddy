@@ -94,7 +94,7 @@ def ProcessMessages(messages):
                     fileContents = flow.download(message['content']['path'])
                     WriteImageToFilesystem(newFileName, fileContents)
             else:
-                if("announce" in message['tags']):
+                if ("announce" in message['tags']) or ("announce" in message['content']):
                     print(message)
                     if DbFunctions.SetImage(messageId,newFileName):
                         TextFunctions.SaveTextToImage(message['content'], newFileName)
