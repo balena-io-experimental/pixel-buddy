@@ -2,6 +2,8 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-ubuntu-python:3.7-bionic-build
 
 WORKDIR /usr/src/app
 
+RUN apt-get update && apt-get install -y libfreetype6-dev
+
 RUN pip3 install pillow requests redis flowdock-api-wrapper
 
 COPY *.py ./
