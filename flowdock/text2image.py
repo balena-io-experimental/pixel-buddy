@@ -1,4 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
+from pilmoji import Pilmoji
+import emoji
+
 import os
 import textwrap
 from string import ascii_letters
@@ -10,7 +13,7 @@ imagePath = "/data/my_data/"
 DEBUG = (os.getenv("DEBUG") or "false") != "false"
 class TextFunctions():
 
-    def SaveTextToImage(my_text, filename):
+    def SaveTextToImage(my_text, filename=''):
         img = Image.new('RGBA', (720, 720), color=background)
         draw = ImageDraw.Draw(img)
 
@@ -26,16 +29,19 @@ class TextFunctions():
         text = textwrap.fill(text=my_text, width=max_char_count)
 
         try:
-            w, h = draw.textsize(text)
+            w, h = draw.textsize(emoji.demojize(text))
         except UnicodeEncodeError:
             if DEBUG:
                 print("Could not encode the message: " + my_text)
             return
 
-        # Add text to the image
-        draw.text(xy=((img.size[0] - w)/4, (img.size[1] - h) / 4), text=text, font=font, fill='#ffffff', align='center')
+        position = ( int((img.size[0] -w)/4), int((img.size[1] -h ) / 4))
 
+        # Add text to the image
+        pilmoji = Pilmoji(img)
+        pilmoji.text(position, text, (255,255,255),font)
+        # draw.text(xy=, text=text, font=font, fill='#ffffff', align='center')
+        # img.show()
         img.save(imagePath + filename, 'png')
-    
-    
+
 
