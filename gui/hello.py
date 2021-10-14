@@ -28,7 +28,11 @@ class SlideShow(Carousel):
         gc.collect()
         #read images
         images = sorted(os.listdir(imagePath))
-        src = imagePath +'/' +images[pointer]
+
+        if len(images) == 0:
+            return
+
+        src = imagePath + '/' + images[pointer]
         image = Image(source=src, allow_stretch=True, nocache=True)
         self.add_widget(image)
 
@@ -81,7 +85,14 @@ class MainApp(App):
     def update_caption(self):
         global images
         global pointer
-        self.caption.text = images[pointer]
+        parts = images[pointer].split('_')
+        # pop the message ID, we don't want it
+        parts.pop(0)
+        caption = ""
+        for part in parts:
+            caption = caption + " " + part
+        self.caption.text = caption
+        
 
 
 
