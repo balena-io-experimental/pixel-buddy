@@ -6,91 +6,52 @@ from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 
-import gc
 import os
 
 AUTO_SLIDE_DURATION = 10
-imagePath = os.getenv("IMAGE_PATH") or '/data/my_data'
-images = []
-pointer = 0
 
 # A carousel component to show images slideshow
-class SlideShow(Carousel):
-    def on_touch_down(self, touch):
-        if touch.is_double_tap:
-            print('double tap detected')
-            
-    def build_carousel(self, initialLoad):
-        global images
-        global pointer
-        self.clear_widgets()
-        gc.collect()
-        #read images
-        images = sorted(os.listdir(imagePath))
+class SlideShow(ScreenManager):
+    def __init__(self, *args, images=list(), **kwargs):
+        super(ScreenManager, self).__init__(*args, **kwargs)
+        for image in images:
+            screen = Screen(name=os.path.basename(image))
+            screen.add_widget(Image(source=image, allow_stretch=True, nocache=True))
+            self.add_widget(screen)
 
-        if len(images) == 0:
-            return False
-
-        src = imagePath + '/' + images[pointer]
-        image = Image(source=src, allow_stretch=True, nocache=True)
-        self.add_widget(image)
-
-
-        if not initialLoad:
-            if pointer == (len(images)-1):
-                pointer = 0
-            else:
-                pointer = (pointer + 1)
-            
-            src = imagePath +'/' +images[pointer]
-            image = Image(source=src, allow_stretch=True, nocache=True)
-            self.add_widget(image)
-
-            self.load_next()
-        
-        return True
-
-# main app 
 class MainApp(App):
     def build(self):
+        image_path = os.getenv("IMAGE_PATH") or '/data/my_data'
+        images = [os.path.join(image_path, name) for name in sorted(os.listdir(image_path))]
+
         # create carousel 95% vertical space
-        carousel = SlideShow(direction='right',loop = True,scroll_timeout=0,size_hint=(1,0.95))
-        self.carousel = carousel
+        self.slideshow = SlideShow(images=images, transition=SlideTransition())
 
         # create label
-        caption = Label(text='',size_hint=(1,0.05),font_size='25sp',text_size=(500, None),halign='center')
-        self.caption = caption
+        self.caption = Label(
+                text=self.slideshow.current,
+                size_hint=(1,0.05),
+                font_size='25sp',
+                text_size=(500, None),
+                halign='center')
+
+        # discard the message ID and join the remaining parts with a space
+        def set_caption(obj, screen_name):
+            self.caption.text = ' '.join(screen_name.split('_')[1:])
+        self.slideshow.bind(current=set_caption)
 
         # layout -> root widget
         layout = BoxLayout(orientation='vertical')
-        layout.add_widget(self.carousel)
+        layout.add_widget(self.slideshow)
         layout.add_widget(self.caption)
         return layout
 
     def on_start(self):
-        global images
-        global pointer
-        if self.carousel.build_carousel(True):
-            # set caption
-            self.update_caption()
+        def advance_slide(*args):
+            self.slideshow.current = self.slideshow.next()
 
-        Clock.schedule_interval(self.build_carousel_on_timer,AUTO_SLIDE_DURATION)
-
-    def build_carousel_on_timer(self,delay):
-        if self.carousel.build_carousel(False):        
-            # update caption
-            self.update_caption()
-
-    def update_caption(self):
-        global images
-        global pointer
-        parts = images[pointer].split('_')
-        # pop the message ID, we don't want it
-        parts.pop(0)
-        caption = ""
-        for part in parts:
-            caption = caption + " " + part
-        self.caption.text = caption
+        Clock.schedule_interval(advance_slide, AUTO_SLIDE_DURATION)
 
 MainApp().run()
