@@ -32,4 +32,6 @@ The following variables are optional:
 
 `NO_EXPIRY_TAGS` - A comma delimted list of tags which will not auto expire and be deleted from the device.
 
-`FLUSH` - A boolean value that determines whether images will be automatically deleted from the device.
+`FLUSH` - A boolean ("true" or "false") value that determines whether images will be automatically deleted from the device when the flowdock service starts. This is useful when you alter the configuration of the device, and need old images removed.
+
+`CURSOR` - A boolean ("true" or "false") value that determines if a cursor is shown on the screen.
