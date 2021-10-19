@@ -1,5 +1,5 @@
 # second-screen
-Create a dedicated second screen to share moments that are meaningful to you.
+Create a dedicated display to view shared moments that are meaningful to you.
 
 ![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/device1b.jpg)
 
@@ -22,7 +22,7 @@ Features:
 
 To use this source, you must set the following device variable:
 
-`FLOWDOCK_TOKEN` - In Flowdock, click your user name in the upper left, select "account" and then "API tokens". Copy your personal API token and add it as a value to this device variable
+`FLOWDOCK_TOKEN` - In Flowdock, click your user name in the upper left, select "account" and then "API tokens". Copy your personal API token and add it as a value to this device variable.
 
 The following variables are optional:
 
