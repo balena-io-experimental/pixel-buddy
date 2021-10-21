@@ -84,4 +84,4 @@ The Pi will begin downloading the application but we need to set a few [device c
 
 After you enter these values, your containers will restart and soon your device should start displaying any images (if available.)
 
-A few things to note about the HyperPixel display: Due to the way it interacts with the serial port, the device may not boot in development mode whn using the display. In addition, the HyperPixel uses "basically all" of the GPIO pins, making them unavailable for HATs or other uses. There is however an alternate I2C interface on the back of the HyperPixel.
+A few things to note about the HyperPixel display: Due to the way it interacts with the serial port, the device may not boot in development mode when attached to the display. In addition, the HyperPixel uses "basically all" of the GPIO pins, making them unavailable for HATs or other uses. There is however an alternate I2C interface on the back of the HyperPixel.
