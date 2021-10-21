@@ -54,3 +54,15 @@ Although this project runs on any balena device with a screen, the optimal exper
 - Seven (7) M3 steel hex socket head cap bolt screws 10mm in length (such as [these](https://www.amazon.com/Fullerkreg-Socket-Stainless-Machine-Quantity/dp/B07CK3RSN3))
 
 ### Assembly instructions
+(coming soon!)
+
+### Software setup
+You can use the button below to deploy this software to your device. If you don't already have a free [balenaCloud account](https://dashboard.balena-cloud.com/signup), you will be prompted to set one up first.
+
+(button coming soon!)
+
+Alternatively, you can clone this repo, create a new fleet, and push it to your device using the [balena CLI](https://www.balena.io/docs/reference/balena-cli/). This method is recommended if you want to potentially modify the project or do further development.
+
+In either case, once you have clicked the deploy button (which will walk you through creating a fleet) or pushed the project using the CLI, next click the "Add device" button in your fleet. Choose the Raspberry Pi 3 (NOT 64 bit) and remember to enter your WiFi credentials since the Pi 3A+ does not have ethernet capability. Download the OS image file, burn it to a microSD card using [balena Etcher](https://www.balena.io/etcher/), insert the card into the Pi and then power it on.
+
+The Pi will begin downloading the application but we need to set a few [device configuration variables](https://www.balena.io/docs/learn/manage/configuration/) before your display will show any images:
