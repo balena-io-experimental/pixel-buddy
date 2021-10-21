@@ -65,4 +65,23 @@ Alternatively, you can clone this repo, create a new fleet, and push it to your 
 
 In either case, once you have clicked the deploy button (which will walk you through creating a fleet) or pushed the project using the CLI, next click the "Add device" button in your fleet. Choose the Raspberry Pi 3 (NOT 64 bit) and remember to enter your WiFi credentials since the Pi 3A+ does not have ethernet capability. Download the OS image file, burn it to a microSD card using [balena Etcher](https://www.balena.io/etcher/), insert the card into the Pi and then power it on.
 
-The Pi will begin downloading the application but we need to set a few [device configuration variables](https://www.balena.io/docs/learn/manage/configuration/) before your display will show any images:
+The Pi will begin downloading the application but we need to set a few [device configuration variables](https://www.balena.io/docs/learn/manage/configuration/) before your display will show any images: (these are for the Hyperrpixel display only)
+
+| Variable Name | Variable Value |
+| ------------ | ----------- |
+| RESIN_HOST_CONFIG_display_default_lcd | 1 |
+| RESIN_HOST_CONFIG_dpi_group | 2 |
+| RESIN_HOST_CONFIG_dpi_mode | 87 |
+| RESIN_HOST_CONFIG_dpi_output_format | 0x5f026 |
+| RESIN_HOST_CONFIG_dpi_timings | 720 0 20 20 40 720 0 15 15 15 0 0 0 60 0 36720000 4 |
+| RESIN_HOST_CONFIG_enable_dpi_lcd | 1 |
+| RESIN_HOST_CONFIG_framebuffer_height | 720 |
+| RESIN_HOST_CONFIG_framebuffer_width | 720 |
+| RESIN_HOST_CONFIG_overscan_bottom | 0 |
+| RESIN_HOST_CONFIG_overscan_left | 0 |
+| RESIN_HOST_CONFIG_overscan_right | 0 |
+| RESIN_HOST_CONFIG_overscan_top | 0 |
+
+After you enter these values, your containers will restart and soon your device should start displaying any images (if available.)
+
+A few things to note about the HyperPixel display: Due to the way it interacts with the serial port, the device may not boot in development mode whn using the display. In addition, the HyperPixel uses "basically all" of the GPIO pins, making them unavailable for HATs or other uses. There is however an alternate I2C interface on the back of the HyperPixel.
