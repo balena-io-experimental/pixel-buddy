@@ -36,7 +36,14 @@ The following variables are optional:
 
 `CURSOR` - A boolean ("true" or "false") value that determines if a cursor is shown on the screen.
 
-Note that we use [Redis](https://redis.io/) to keep track of images to know whether we have processed them already and when they expire. (see the [db_functions.py](https://github.com/balena-io-playground/second-screen/blob/master/flowdock/db_functions.py) script.) In addition, the [text2image.py](https://github.com/balena-io-playground/second-screen/blob/master/flowdock/text2image.py) script uses the [Pillow](https://python-pillow.org/) imaging library to convert text-based messages to images, as well as to nicely center the text on the screen. Finally, [pilmoji](https://github.com/jay3332/pilmoji) is used to render any emojis. 
+Note that we use [Redis](https://redis.io/) to keep track of images to know whether we have processed them already and when they expire. (see the [db_functions.py](https://github.com/balena-io-playground/second-screen/blob/master/flowdock/db_functions.py) script.) In addition, the [text2image.py](https://github.com/balena-io-playground/second-screen/blob/master/flowdock/text2image.py) script uses the [Pillow](https://python-pillow.org/) imaging library to convert text-based messages to images, as well as to nicely center the text on the screen. Finally, [pilmoji](https://github.com/jay3332/pilmoji) is used to render any emojis contained in a message. 
 
 ## The carousel
 The carousel is in the "gui" container and is a Python script that displays the images in the shared folder as a slideshow. The script utilizes the [Kivy](https://kivy.org/#home) library for the carousel and to detect taps on the touchscreen. (Although initially, we don't perform any actions with touch events.)
+
+The [xserver block](https://github.com/balenablocks/xserver) runs an [X server](https://en.wikipedia.org/wiki/X_Window_System) which provides a display output for our carousel. The carousel communicates with the X server via a Unix socket. (The `x11:/tmp/.X11-unix` mapped volume in both container's docker-compose entry.)
+
+## Reference design
+The optimal experience for the Pixel Buddy utilizes a 4 inch square [HyperPixel display](https://shop.pimoroni.com/products/hyperpixel-4-square?variant=30138251444307) along with a Raspberry Pi 3A+ in a custom printed case. Below is the parts list and instructions for this design:
+
+### Parts list
