@@ -43,9 +43,9 @@ The carousel is in the "gui" container and is a Python script that displays the 
 
 The [xserver block](https://github.com/balenablocks/xserver) runs an [X server](https://en.wikipedia.org/wiki/X_Window_System) which provides a display output for our carousel. The carousel communicates with the X server via a Unix socket. (The `x11:/tmp/.X11-unix` mapped volume in both container's docker-compose entry.)
 
+## Reference design
 ![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/device_parts.jpg)
 
-## Reference design
 Although this project runs on any balena device with a screen, the optimal experience for the Pixel Buddy utilizes a 4 inch square [HyperPixel display](https://shop.pimoroni.com/products/hyperpixel-4-square?variant=30138251444307) along with a Raspberry Pi 3A+ in a custom printed case. Below is the parts list and instructions for this design:
 
 ### Parts list
