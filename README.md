@@ -86,6 +86,23 @@ After you enter these values, your containers will restart and soon your device 
 A few things to note about the HyperPixel display: Due to the way it interacts with the serial port, the device may not boot in development mode when attached to the display. In addition, the HyperPixel uses "basically all" of the GPIO pins, making them unavailable for HATs or other uses. There is however an alternate I2C interface on the back of the HyperPixel.
 
 ### Assembly instructions
-(coming soon!)
+(in progress!)
+After you've set up the software and verified that your Pixel Buddy is operational, you can start assembling the case.
 
 ![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/Case_animation_v12.gif)
+
+The case consists of nine parts:
+- The front face that holds the screen
+- The left side which has three shallow holes solely for the decorative buttons
+- The right side which has three deep holes for the screws that join the two sides
+- Six decorative buttons featuring the balena logo
+
+#### Step 1
+Assuming your HyperPixel is attached to the Pi 3A+, slide the bottom of the HyperPixel display under the two tabs on the front face frame.
+
+![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/slide_front)
+
+Slightly bend the frame at the top to slide the top tab over the HyperPixel. Be careful not to break the frame or it's tabs, and be gentle with the HyperPixel, it's fragile!
+
+#### Step 2
+
