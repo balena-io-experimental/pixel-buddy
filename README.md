@@ -100,7 +100,7 @@ The case consists of nine parts:
 #### Step 1
 Assuming your HyperPixel is attached to the Pi 3A+, slide the bottom of the HyperPixel display under the two tabs on the front face frame.
 
-![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/slide_front.jpg)
+![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/slide_front.png)
 
 Slightly bend the frame at the top to slide the top tab over the HyperPixel. Be careful not to break the frame or it's tabs, and be gentle with the HyperPixel, it's fragile!
 
