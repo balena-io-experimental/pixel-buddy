@@ -1,7 +1,7 @@
 # pixel-buddy
 Create a dedicated display to view shared moments that are meaningful to you.
 
-![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/device1b.jpg)
+![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/device1c.jpg)
 
 The Pixel Buddy runs on any balena device with a screen, and we provide build instructions and 3D printing files for our reference design pictured above.
 
@@ -43,6 +43,8 @@ The carousel is in the "gui" container and is a Python script that displays the 
 
 The [xserver block](https://github.com/balenablocks/xserver) runs an [X server](https://en.wikipedia.org/wiki/X_Window_System) which provides a display output for our carousel. The carousel communicates with the X server via a Unix socket. (The `x11:/tmp/.X11-unix` mapped volume in both container's docker-compose entry.)
 
+![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/device_parts.jpg)
+
 ## Reference design
 Although this project runs on any balena device with a screen, the optimal experience for the Pixel Buddy utilizes a 4 inch square [HyperPixel display](https://shop.pimoroni.com/products/hyperpixel-4-square?variant=30138251444307) along with a Raspberry Pi 3A+ in a custom printed case. Below is the parts list and instructions for this design:
 
@@ -52,9 +54,6 @@ Although this project runs on any balena device with a screen, the optimal exper
 - A MicroSD card and power supply for the Pi
 - Custom printed case using a standard consumer 3D printer or printing service (files are in the [STL](https://github.com/balena-io-playground/second-screen/tree/master/stl) folder)
 - Seven (7) M3 steel hex socket head cap bolt screws 10mm in length (such as [these](https://www.amazon.com/Fullerkreg-Socket-Stainless-Machine-Quantity/dp/B07CK3RSN3))
-
-### Assembly instructions
-(coming soon!)
 
 ### Software setup
 You can use the button below to deploy this software to your device. If you don't already have a free [balenaCloud account](https://dashboard.balena-cloud.com/signup), you will be prompted to set one up first.
@@ -85,3 +84,8 @@ The Pi will begin downloading the application but we need to set a few [device c
 After you enter these values, your containers will restart and soon your device should start displaying any images (if available.)
 
 A few things to note about the HyperPixel display: Due to the way it interacts with the serial port, the device may not boot in development mode when attached to the display. In addition, the HyperPixel uses "basically all" of the GPIO pins, making them unavailable for HATs or other uses. There is however an alternate I2C interface on the back of the HyperPixel.
+
+### Assembly instructions
+(coming soon!)
+
+![](https://raw.githubusercontent.com/balena-io-playground/second-screen/master/images/Case_animation_v12.gif)
