@@ -105,4 +105,9 @@ Assuming your HyperPixel is attached to the Pi 3A+, slide the bottom of the Hype
 Slightly bend the frame at the top to slide the top tab over the HyperPixel. Be careful not to break the frame or it's tabs, and be gentle with the HyperPixel, it's fragile!
 
 #### Step 2
+Make sure the power cord is attached to the Raspberry Pi. Slide the front frame assembly sideways into one side of the case, and then slide the other side of the case together, ensuring the power cord is exiting the case through the notch in the back and not sitting between the two nearby posts. Make sure the frame is setaed properly and flush with the front of the two case parts. Carefully insert and tighten three screws into the right side of the case to hold the two sides together. Finally, place four screws into the back of the case and tighten to hold the front assembly in place.
 
+#### Step 4
+Insert three of the decorative buttons into the holes on each side of the case. The buttons should snap into place but may need a slight squeeze to inser properly into the holes.
+
+Enjoy your Pixel Buddy!
