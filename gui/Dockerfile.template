@@ -1,8 +1,32 @@
 FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7
 
-RUN install_packages libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libmtdev-dev
 
-RUN pip install kivy
+RUN install_packages libfreetype6-dev libgl1-mesa-dev libgles2-mesa-dev libdrm-dev libgbm-dev libudev-dev libasound2-dev liblzma-dev libjpeg-dev libtiff-dev libwebp-dev git build-essential
+
+RUN install_packages wget libgdm-dev and libdrm-dev libmtdev-dev
+
+RUN wget https://libsdl.org/release/SDL2-2.0.10.tar.gz &&\
+    tar -zxvf SDL2-2.0.10.tar.gz &&\
+    cd SDL2-2.0.10 &&\
+    ./configure --enable-video-kmsdrm  --enable-video-opengl --disable-video-x11 --disable-video-rpi &&\
+    make -j$(nproc) &&\
+    make install &&\
+    cd -
+    
+RUN wget https://libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz &&\
+    tar -zxvf SDL2_image-2.0.5.tar.gz &&\
+    cd SDL2_image-2.0.5 &&\
+    ./configure &&\
+    make -j$(nproc) &&\
+    make install &&\
+    cd -
+
+RUN pip install kivy 
+# RUN pip install Pillow
+
+# RUN install_packages libx11-6  
+# RUN install_packages libxext6  
+# RUN install_packages libxext6  
 
 WORKDIR /usr/src/app
 

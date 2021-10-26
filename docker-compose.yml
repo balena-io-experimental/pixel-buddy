@@ -1,6 +1,6 @@
 version: "2.1"
 volumes:
-  x11:
+  # x11:
   shared-data:
   redis-data:
 services:
@@ -13,18 +13,18 @@ services:
     group_add:
       - video
     volumes:
-      - 'x11:/tmp/.X11-unix'
+      # - 'x11:/tmp/.X11-unix'
       - 'shared-data:/data/my_data'
-    environment:
-      - DISPLAY=:0
-    depends_on:
-      - xserver
-  xserver:
-    image: balenablocks/xserver:latest
-    restart: always
-    privileged: true
-    volumes:
-      - 'x11:/tmp/.X11-unix'
+    # environment:
+    #   - DISPLAY=:0
+    # depends_on:
+    #   - xserver
+  # xserver:
+  #   image: balenablocks/xserver:latest
+  #   restart: always
+  #   privileged: true
+  #   volumes:
+  #     - 'x11:/tmp/.X11-unix'
   redis:
     image: redis:6.2.4-alpine
     command: ["redis-server", "--save", "60", "250"]
