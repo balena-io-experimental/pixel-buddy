@@ -54,7 +54,7 @@ def GetImageTags(message):
 def MessageExpired(message):
     timestamp = (message['sent'])
     convertedTimestamp = datetime.fromtimestamp(round(timestamp / 1000))
-    currentTimeUtc = datetime.utcnow()
+    currentTimeUtc = datetime.now()
     difference = ((currentTimeUtc - convertedTimestamp).total_seconds())
     if DEBUG:
         print("The image is " + str(difference) + " seconds old and the expiry is " + str(expiry) + " seconds")
@@ -68,6 +68,7 @@ def ProcessMessages(messages):
                 messageId = message['uuid']
             else:
                 messageId = message['flow'] + "-" + str(message['id'])
+            messageId = messageId.replace("_","-")
             
             if DbFunctions.ImageExists(messageId):
                 # we have processed this message

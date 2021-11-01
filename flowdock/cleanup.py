@@ -17,7 +17,7 @@ while True:
     for file in files:
         messageId = file.split('_')[0]
         if DEBUG:
-            print("Checking whether to clean up messageId" + messageId)
+            print("Checking whether to clean up messageId " + messageId)
         if not messageId in keys:
             print("cleaning up " + path + file)
             os.remove(path + file)
