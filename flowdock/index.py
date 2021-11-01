@@ -13,7 +13,8 @@ flowdockToken = os.getenv("FLOWDOCK_TOKEN")
 frequency = int(os.getenv("FREQUENCY") or 120)
 background = os.getenv("BACKGROUND_COLOUR") or "white"
 noExpiryTags = (os.getenv('NO_EXPIRY_TAGS') or 'proofoflegs,memeservice').split(',')
-expiry = int((os.getenv("EXPIRY") or 12) * 60 * 60)
+expiry = (int((os.getenv("EXPIRY") or 12)) * 60 * 60)
+
 FLUSH = (os.getenv("FLUSH") or "false") != "false"
 DEBUG = (os.getenv("DEBUG") or "false") != "false"
 imagePath = "/data/my_data/"

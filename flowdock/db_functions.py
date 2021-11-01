@@ -2,7 +2,7 @@ import redis
 import os
 
 redisHost = os.getenv("REDIS_HOST") or 'redis'
-expiry = int((os.getenv("EXPIRY") or 12) * 60 * 60)
+expiry = (int((os.getenv("EXPIRY") or 12)) * 60 * 60)
 class DbFunctions():
 
     def GetImage(imageID):
