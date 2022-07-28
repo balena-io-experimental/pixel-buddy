@@ -66,6 +66,10 @@ In either case, once you have clicked the deploy button (which will walk you thr
 
 The Pi will begin downloading the application but we need to set a few [device configuration variables](https://www.balena.io/docs/learn/manage/configuration/) before your display will show any images: (these are for the HyperPixel display only)
 
+Edit the "Define DT overlays" variable and set to `"hyperpixel4-square-pi3"` (including the quotes)
+
+Change the "Define device GPU memory in megabytes." value to at least 64
+
 | Variable Name | Variable Value |
 | ------------ | ----------- |
 | RESIN_HOST_CONFIG_display_default_lcd | 1 |
