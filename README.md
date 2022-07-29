@@ -62,13 +62,17 @@ You can use the button below to deploy this software to your device. If you don'
 
 Alternatively, you can clone this repo, create a new fleet, and push it to your device using the [balena CLI](https://www.balena.io/docs/reference/balena-cli/). This method is recommended if you want to potentially modify the project or do further development.
 
-In either case, once you have clicked the deploy button (which will walk you through creating a fleet) or pushed the project using the CLI, next click the "Add device" button in your fleet. Choose the Raspberry Pi 3 (NOT 64 bit) and remember to enter your WiFi credentials since the Pi 3A+ does not have ethernet capability. Download the OS image file, burn it to a microSD card using [balena Etcher](https://www.balena.io/etcher/), insert the card into the Pi and then power it on.
+In either case, once you have clicked the deploy button (which will walk you through creating a fleet) or pushed the project using the CLI, next click the "Add device" button in your fleet. Choose the Raspberry Pi 3 (NOT 64 bit) and remember to enter your WiFi credentials since the Pi 3A+ does not have ethernet capability. Download the OS image file, burn it to a microSD card using [balena Etcher](https://www.balena.io/etcher/), insert the card into the Pi and then power it on. The Pi will then begin downloading the application.
 
-The Pi will begin downloading the application but we need to set a few [device configuration variables](https://www.balena.io/docs/learn/manage/configuration/) before your display will show any images: (these are for the HyperPixel display only)
+### Device configuration
+
+Before your display will show any images, we'll need to set a few [device configuration variables](https://www.balena.io/docs/learn/manage/configuration/). (these are for the HyperPixel Square display only)
 
 Edit the "Define DT overlays" variable and set to `"hyperpixel4-square-pi3"` (including the quotes)
 
 Change the "Define device GPU memory in megabytes." value to at least 64
+
+Set the following custom configuration variables:
 
 | Variable Name | Variable Value |
 | ------------ | ----------- |
